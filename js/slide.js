@@ -176,7 +176,7 @@
 
 		$( "#content-images" ).animate( {
 			"margin-left" : -this.indice * this.widthSelf
-		}, 1000 );
+		}, 1000, "easeInBack" );
 
 	}
 
