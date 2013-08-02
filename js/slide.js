@@ -16,52 +16,47 @@
 	var slides = [];
 	var contId = 0;
 
-	$.fn.extend( {
+	/*
+	 * @param {Object} elementTarget
+	 */
+	function Slide( elementTarget ) {
 
-		"slide" : function() {
-			
-			$.each( this, function() {
+		this.init( $( elementTarget ) );
 
-				slide = new Slide( this );
-
-			} );
-
-		}
-
-	} );
-
-	function Slide( element ) {
-
-		this.init( $( element ) );
-
-		slides.push( this );
-		contId++;
+		slides.push( this ); // salver all instance
+		contId++; // cont all instance
 
 	}
 
-	Slide.prototype.contId = 0;
-	Slide.prototype.slides = [];
-	Slide.prototype.self = null;
-	Slide.prototype.selfElement = null;
-	Slide.prototype.widthSelf = 0;
-	Slide.prototype.CLASS_SELETOR_NAV = null;
+	Slide.prototype.effect = "";
+	Slide.prototype.timeAnimate = 0;
+	Slide.prototype.widthTarget = 0;
 	Slide.prototype.lenImages = 0;
 	Slide.prototype.indice = 0;
+	Slide.prototype.contId = 0;
+	Slide.prototype.CLASS_SELETOR_NAV = null;
+	Slide.prototype.elementTarget = null;
+	Slide.prototype.slides = [];
+	
 
 	/*
-	 * @param {String} element
+	 * @param {Object} elementTarget
 	 */
-	Slide.prototype.init = function( element ) {
+	Slide.prototype.init = function( elementTarget ) {
 
-		this.self = this;
 		this.contId = contId;
 		this.slides = slides;
-		this.selfElement = element;
-		this.widthSelf = this.selfElement.width();
+
+		this.elementTarget = elementTarget;
+		this.widthTarget = this.elementTarget.width();
+
 		this.lenImages = this.getImages().length;
+
+		this.timeAnimate = 1000;
+		this.effect = "easeInBack";
 		this.CLASS_SELETOR_NAV = "seletor-nav";
 
-		this.selfElement.css( "position", "relative" );
+		this.elementTarget.css( "position", "relative" );
 
 		this.addImages();
 		this.addNav();
@@ -70,13 +65,13 @@
 
 	Slide.prototype.clearImages = function() {
 
-		this.selfElement.html( "" );
+		this.elementTarget.html( "" );
 
 	}
 
 	Slide.prototype.getImages = function() {
 
-		var images = this.selfElement.find( "img" );
+		var images = this.elementTarget.find( "img" );
 
 		return images;
 
@@ -107,7 +102,7 @@
 
 		}
 
-		this.selfElement.append( navSlide );
+		this.elementTarget.append( navSlide );
 
 		var cssNavRightLeft = {
 			"position" : "absolute",
@@ -127,8 +122,8 @@
 		var navRight = $( "<div id='nav-right-slide-" + this.contId + "'/>" ).css( cssNavRightLeft )
 		.on( "click", this.next );
 		
-		this.selfElement.append( navRight );
-		this.selfElement.append( navLeft );
+		this.elementTarget.append( navRight );
+		this.elementTarget.append( navLeft );
 
 	}
 
@@ -138,7 +133,7 @@
 
 		var contentImages = $( "<ul id='content-images-" + this.contId + "'/>" ).css( {
 			"height" : "100%",
-			"width" : this.widthSelf * this.lenImages,
+			"width" : this.widthTarget * this.lenImages,
 			"left" : "0",
 			"top" : "0",
 			"margin" : "0",
@@ -149,7 +144,7 @@
 		for( var i = 0; i < this.lenImages; i++ ) {
 
 			var li = $( "<li class='images-slide'/>" ).css( {
-				"width" : this.widthSelf,
+				"width" : this.widthTarget,
 				"height" : "100%",
 				"float" : "left"
 			} );
@@ -164,59 +159,93 @@
 
 		var content = $( "<div/>" ).css( {
 			"overflow" : "hidden",
-			"width" : this.widthSelf,
+			"width" : this.widthTarget,
 			"height" : "100%"
 		} ).append( contentImages );
 
-		this.selfElement.append( content );
+		this.elementTarget.append( content );
 
 
 	}
 
+	/*
+	 * @param {Object} e
+	 */
 	Slide.prototype.prev = function( e ) {
 
-		var element = slides[ e.target.id.replace( /[\D]+/g, "" ) ];
+		var self = slides[ e.target.id.replace( /[\D]+/g, "" ) ]; // get id the elementTarget
 
-		if( element.self.indice == 0 ) {
+		if( self.indice == 0 ) {
 
 			return false;
 
 		}
 		
-		element.self.indice--;
+		self.indice--;
 
-		element.self.move();
+		self.move();
 
 	}
 
+	/*
+	 * @param {Object} e
+	 */
 	Slide.prototype.next = function( e ) {
 
-		var element = slides[ e.target.id.replace( /[\D]+/g, "" ) ];
+		var self = slides[ e.target.id.replace( /[\D]+/g, "" ) ]; // get id the elementTarget
 
-		if( element.self.indice == element.lenImages - 1 ) {
+		if( self.indice == self.lenImages - 1 ) {
 
 			return false;
 
 		}
 
-		element.self.indice++;
+		self.indice++;
 
-		element.self.move();
+		self.move();
 
 	}
 
 	Slide.prototype.move = function() {
 
-		$.each( slides, function( i, element) {
+		$.each( slides, function( i, elementTarget ) {
 
-			$( "#content-images-" + element.contId ).animate( {
-				"margin-left" : -element.indice * element.widthSelf
-			}, 1000, "easeInBack" );
+			elementTarget.animate( elementTarget );
 
 		} );
 
 	}
 
+	/*
+	 * @param {Object} elementTarget
+	 */
+	Slide.prototype.animate = function( elementTarget ) {
+
+		var target = "#content-images-" + elementTarget.contId;
+		var marginLeft = -elementTarget.indice * elementTarget.widthTarget;
+
+		$( target ).animate( {
+			"margin-left" : marginLeft
+		}, elementTarget.timeAnimate, elementTarget.effect );
+
+	}
+
+	// to plugin $.slide
+	$.fn.extend( {
+
+		"slide" : function() {
+			
+			$.each( this, function() {
+
+				slide = new Slide( this );
+
+			} );
+
+		}
+
+	} );
+	
+	// call
 	$( "#content-slide-1, #content-slide-2" ).slide();
 
 } )( jQuery );
