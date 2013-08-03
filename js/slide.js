@@ -2,7 +2,7 @@
  * @Class : Slide
  * @File : slide.js
  * @Date : 31/07/2013
- * @Version : 0.02
+ * @Version : 0.04
  * @Author : Danilo Teixeira
  * @GitHub : https://github.com/danilo-teixeira
  * MIT license see http://opensource.org/licenses/MIT
