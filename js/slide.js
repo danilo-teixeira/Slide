@@ -22,21 +22,22 @@
 	 */
 	function Slide( elementTarget, options ) {
 
+		slides.push( this ); // salver all instance
+
 		this.init( $( elementTarget ), options );
 
-		slides.push( this ); // salver all instance
 		countId++; // cont all
 
 	}
 
 	Slide.prototype.effect = "";
+	Slide.prototype.classSelectorNav = "";
 	Slide.prototype.options = {};
 	Slide.prototype.timeAnimate = 0;
 	Slide.prototype.widthTarget = 0;
 	Slide.prototype.lenImages = 0;
 	Slide.prototype.indice = 0;
 	Slide.prototype.countId = 0;
-	Slide.prototype.classSelectorNav = null;
 	Slide.prototype.elementTarget = null;
 	Slide.prototype.slides = [];
 	
@@ -84,7 +85,8 @@
 
 	Slide.prototype.addNav = function() {
 
-		var navSlide = $( "<ul id='nav-slide-" + this.countId + "'/>" ).css( {
+		// set style ul
+		var cssNavSlide = {
 			"position" : "absolute",
 			"left" : "10px",
 			"bottom" : "10px",
@@ -92,8 +94,13 @@
 			"margin" : "0",
 			"padding" : "0",
 			"list-style" : "none"
-		} );
+		}
 
+		// create ul
+		var navSlide = $( "<ul id='nav-slide-" + this.countId + "'/>" )
+		.css( cssNavSlide ); // add style
+
+		// set style li's
 		var cssNavSelector = ( !this.options[ "class-nav-selector" ] ) ? {
 			"width" : "15px",
 			"height" : "15px",
@@ -102,10 +109,14 @@
 			"border" : "1px solid #ccc",
 		} : {};
 
-		for( var i = 0, len = this.lenImages; i < len; i++ ) {
+		// set class li's
+		this.classSelectorNav = this.classSelectorNav + "-" + this.countId;
 
-			var classOption = ( this.options[ "class-nav-selector" ] ) ? this.options[ "class-nav-selector" ] + " " : "";
-			var classNav = classOption + this.classSelectorNav + "-" + this.countId;
+		var classOption = ( this.options[ "class-nav-selector" ] ) ? this.options[ "class-nav-selector" ] + " " : "";
+		var classNav = classOption + this.classSelectorNav;
+
+		// create and add li's to ul
+		for( var i = 0, len = this.lenImages; i < len; i++ ) {
 
 			var seletorNav = $( "<li class='" + classNav + "' data-indice='" + i + "' data-id-slide='" + this.countId + "'/>" )
 			.css( cssNavSelector )
@@ -115,8 +126,19 @@
 
 		}
 
+		// add ul
 		this.elementTarget.append( navSlide );
 
+		// add class selected
+		var classSelected = this.options[ "class-nav-selector-selected" ];
+		
+		if( classSelected ) {
+
+			this.navSelected( this.countId );
+
+		}
+
+		// set style nav right and left
 		var cssNavRightLeft = {
 			"position" : "absolute",
 			"width" : "30px",
@@ -127,14 +149,23 @@
 			"border" : "1px solid #ccc"
 		}
 
-		var navLeft = $( "<div id='nav-left-slide-" + this.countId + "'/>" ).css( cssNavRightLeft )
-		.on( "click", this.prev );
+		// create nav left
+		var navLeft = $( "<div id='nav-left-slide-" + this.countId + "' data-id-slide='" + this.countId + "'/>" )
+		.css( cssNavRightLeft ) // add style
+		.on( "click", this.prev ); // add event listener
 
-		$.fn.extend( cssNavRightLeft, { "left" : "auto", "right" : "-35px" } );
+		// extend style nav right
+		$.fn.extend( cssNavRightLeft, {
+			"left" : "auto",
+			"right" : "-35px"
+		} );
 
-		var navRight = $( "<div id='nav-right-slide-" + this.countId + "'/>" ).css( cssNavRightLeft )
-		.on( "click", this.next );
+		// create nav right
+		var navRight = $( "<div id='nav-right-slide-" + this.countId + "' data-id-slide='" + this.countId + "'/>" )
+		.css( cssNavRightLeft ) // add style
+		.on( "click", this.next ); // add event listener
 		
+		// add nav right and left
 		this.elementTarget.append( navRight );
 		this.elementTarget.append( navLeft );
 
@@ -142,9 +173,11 @@
 
 	Slide.prototype.addImages = function() {
 
+		// get images
 		var images = this.getImages();
 
-		var contentImages = $( "<ul id='content-images-" + this.countId + "'/>" ).css( {
+		// set style ul#content-images
+		var cssContentImages = {
 			"height" : "100%",
 			"width" : this.widthTarget * this.lenImages,
 			"left" : "0",
@@ -152,42 +185,56 @@
 			"margin" : "0",
 			"padding" : "0",
 			"list-style" : "none"
-		} );
+		};
 
+		// create ul#content-images
+		var contentImages = $( "<ul id='content-images-" + this.countId + "'/>" )
+		.css( cssContentImages ); // add style
+
+		// set style li.images-slide
+		var cssImagesSlide = {
+			"width" : this.widthTarget,
+			"height" : "100%",
+			"float" : "left"
+		};
+
+		// create li.images-slide
 		for( var i = 0, len = this.lenImages; i < len; i++ ) {
 
-			var li = $( "<li class='images-slide'/>" ).css( {
-				"width" : this.widthTarget,
-				"height" : "100%",
-				"float" : "left"
-			} );
+			var li = $( "<li class='images-slide'/>" )
+			.css( cssImagesSlide ); // add style
 
-			li.append( images[i] );
+			li.append( images[i] ); // add images to li.images-slide
 
-			contentImages.append( li );
+			contentImages.append( li ); // add li to ul#content-images
 
 		}
 
-		this.clearImages();
+		this.clearImages(); // clear images
 
+		// wrap ul#content-images
 		var content = $( "<div/>" ).css( {
 			"overflow" : "hidden",
 			"width" : this.widthTarget,
 			"height" : "100%"
 		} ).append( contentImages );
 
+		// add ul#content-images
 		this.elementTarget.append( content );
 
 
 	}
 
-	Slide.prototype.navSelected = function( element ) {
+	/*
+	 * @param {Number} idSlide
+	 */
+	Slide.prototype.navSelected = function( idSlide ) {
 
-		var self = slides[ element.data( "id-slide" ) ]; // get id the elementTarget
-		var classSelected = self.options[ "class-nav-selector-selected" ];
+		var self = slides[ idSlide ]; // get target instance
+		var classSelected = self.options[ "class-nav-selector-selected" ]; // get class selected
 		
-		$( element ).parent().find( "li" ).removeClass( classSelected );
-		$( element ).addClass( classSelected );
+		$( "." + self.classSelectorNav ).removeClass( classSelected ); // remove class selected
+		$( "." + self.classSelectorNav ).eq( self.indice ).addClass( classSelected ); // add class selected
 
 	}
 
@@ -196,8 +243,9 @@
 	 */
 	Slide.prototype.nav = function( e ) {
 
-		var element = $( e.target );
-		var self = slides[ element.data( "id-slide" ) ]; // get id the elementTarget
+		var element = $( e.target ); // get target element
+		var idSlide = element.data( "id-slide" ); // get id the target element
+		var self = slides[ idSlide ]; // get target instance
 
 		if( self.indice == element.data( "indice" ) ) {
 
@@ -205,13 +253,13 @@
 
 		}
 
-		self.indice = element.data( "indice" );
+		self.indice = element.data( "indice" ); // set current indice
 
-		var classSelected = self.options[ "class-nav-selector-selected" ];
+		var classSelected = self.options[ "class-nav-selector-selected" ]; // get class selected
 		
 		if( classSelected ) {
 
-			self.navSelected( element );
+			self.navSelected( idSlide );
 
 		}
 
@@ -224,15 +272,19 @@
 	 */
 	Slide.prototype.prev = function( e ) {
 
-		var self = slides[ e.target.id.replace( /[\D]+/g, "" ) ]; // get id the elementTarget
+		var element = $( e.target ); // get target element
+		var idSlide = element.data( "id-slide" ); // get id the target element
+		var self = slides[ idSlide ]; // get target instance
 
 		if( self.indice == 0 ) {
 
 			return false;
 
 		}
-		
+
 		self.indice--;
+
+		self.navSelected( idSlide );
 
 		self.move();
 
@@ -243,7 +295,9 @@
 	 */
 	Slide.prototype.next = function( e ) {
 
-		var self = slides[ e.target.id.replace( /[\D]+/g, "" ) ]; // get id the elementTarget
+		var element = $( e.target ); // get target element
+		var idSlide = element.data( "id-slide" ); // get id the target element
+		var self = slides[ idSlide ]; // get target instance
 
 		if( self.indice == self.lenImages - 1 ) {
 
@@ -252,6 +306,8 @@
 		}
 
 		self.indice++;
+
+		self.navSelected( idSlide );
 
 		self.move();
 
@@ -272,8 +328,8 @@
 	 */
 	Slide.prototype.animate = function( elementTarget ) {
 
-		var target = "#content-images-" + elementTarget.countId;
-		var marginLeft = -elementTarget.indice * elementTarget.widthTarget;
+		var target = "#content-images-" + elementTarget.countId; // get target element
+		var marginLeft = -elementTarget.indice * elementTarget.widthTarget; // calc margin target element
 
 		$( target ).stop().animate( {
 			"margin-left" : marginLeft
