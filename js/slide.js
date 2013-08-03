@@ -101,13 +101,19 @@
 		.css( cssNavSlide ); // add style
 
 		// set style li's
-		var cssNavSelector = ( !this.options[ "class-nav-selector" ] ) ? {
+		var cssNavSelector = {
 			"width" : "15px",
 			"height" : "15px",
 			"float" : "left",
 			"margin-left" : "3px",
 			"border" : "1px solid #ccc",
-		} : {};
+		};
+
+		if( this.options[ "nav-selector" ] && typeof this.options[ "nav-selector" ] === "object" ) {
+
+			$.fn.extend( cssNavSelector, this.options[ "nav-selector" ] );
+
+		}
 
 		// set class li's
 		this.classSelectorNav = this.classSelectorNav + "-" + this.countId;
@@ -357,7 +363,15 @@
 	// call
 	$( "#content-slide-2" ).slide( {
 		"effect" : "easeInQuad",
-		"class-nav-selector" : "nav-selector",
+		"nav-selector" : {
+			"width" : "15px",
+			"height" : "15px",
+			"float" : "left",
+			"margin-left" : "3px",
+			"border" : "1px solid #ccc",
+			"border-radius" : "50%",
+			"cursor" : "pointer"
+		},
 		"class-nav-selector-selected" : "nav-selector-selected"
 	} );
 	$( "#content-slide-1" ).slide();
