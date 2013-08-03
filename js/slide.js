@@ -106,7 +106,7 @@
 			"height" : "15px",
 			"float" : "left",
 			"margin-left" : "3px",
-			"border" : "1px solid #ccc",
+			"border" : "1px solid #ccc"
 		};
 
 		if( this.options[ "nav-selector" ] && typeof this.options[ "nav-selector" ] === "object" ) {
