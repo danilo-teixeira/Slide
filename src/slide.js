@@ -38,24 +38,26 @@
 	 */
 	Slide.prototype.init = function( elementTarget, options ) {
 
-		this.options = options;
+		var self = this;
 
-		this.countId = countId;
-		this.slides = slides;
+		self.options = options;
 
-		this.elementTarget = elementTarget;
-		this.widthTarget = this.elementTarget.width();
+		self.countId = countId;
+		self.slides = slides;
 
-		this.lenImages = this.getImages().length;
+		self.elementTarget = elementTarget;
+		self.widthTarget = self.elementTarget.width();
 
-		this.timeAnimate = this.options[ "time-animate" ] || 1000;
-		this.effect = this.options[ "effect" ] || "easeInBack";
-		this.classSelectorNav = "seletor-nav";
+		self.lenImages = self.getImages().length;
 
-		this.elementTarget.css( "position", "relative" );
+		self.timeAnimate = self.options[ "time-animate" ] || 1000;
+		self.effect = self.options[ "effect" ] || "easeInBack";
+		self.classSelectorNav = "seletor-nav";
 
-		this.addImages();
-		this.addNav();
+		self.elementTarget.css( "position", "relative" );
+
+		self.addImages();
+		self.addNav();
 
 	}
 
@@ -75,6 +77,8 @@
 
 	Slide.prototype.addNav = function() {
 
+		var self = this;
+
 		// set style ul
 		var cssNavSlide = {
 			"position" : "absolute",
@@ -87,7 +91,7 @@
 		}
 
 		// create ul
-		var navSlide = $( "<ul id='nav-slide-" + this.countId + "'/>" )
+		var navSlide = $( "<ul id='nav-slide-" + self.countId + "'/>" )
 		.css( cssNavSlide ); // add style
 
 		// set style li's
@@ -99,38 +103,38 @@
 			"border" : "1px solid #ccc"
 		};
 
-		if( this.options[ "nav-selector" ] && typeof this.options[ "nav-selector" ] === "object" ) {
+		if( self.options[ "nav-selector" ] && typeof self.options[ "nav-selector" ] === "object" ) {
 
-			$.fn.extend( cssNavSelector, this.options[ "nav-selector" ] );
+			$.fn.extend( cssNavSelector, self.options[ "nav-selector" ] );
 
 		}
 
 		// set class li's
-		this.classSelectorNav = this.classSelectorNav + "-" + this.countId;
+		self.classSelectorNav = self.classSelectorNav + "-" + self.countId;
 
-		var classOption = ( this.options[ "class-nav-selector" ] ) ? this.options[ "class-nav-selector" ] + " " : "";
-		var classNav = classOption + this.classSelectorNav;
+		var classOption = ( self.options[ "class-nav-selector" ] ) ? self.options[ "class-nav-selector" ] + " " : "";
+		var classNav = classOption + self.classSelectorNav;
 
 		// create and add li's to ul
-		for( var i = 0, len = this.lenImages; i < len; i++ ) {
+		for( var i = 0, len = self.lenImages; i < len; i++ ) {
 
-			var seletorNav = $( "<li class='" + classNav + "' data-indice='" + i + "' data-id-slide='" + this.countId + "'/>" )
+			var seletorNav = $( "<li class='" + classNav + "' data-indice='" + i + "' data-id-slide='" + self.countId + "'/>" )
 			.css( cssNavSelector )
-			.on( "click", this.nav );
+			.on( "click", self.nav );
 
 			navSlide.append( seletorNav );
 
 		}
 
 		// add ul
-		this.elementTarget.append( navSlide );
+		self.elementTarget.append( navSlide );
 
 		// add class selected
-		var classSelected = this.options[ "class-nav-selector-selected" ];
+		var classSelected = self.options[ "class-nav-selector-selected" ];
 		
 		if( classSelected ) {
 
-			this.navSelected( this.countId );
+			self.navSelected( self.countId );
 
 		}
 
@@ -146,9 +150,9 @@
 		}
 
 		// create nav left
-		var navLeft = $( "<div id='nav-left-slide-" + this.countId + "' data-id-slide='" + this.countId + "'/>" )
+		var navLeft = $( "<div id='nav-left-slide-" + self.countId + "' data-id-slide='" + self.countId + "'/>" )
 		.css( cssNavRightLeft ) // add style
-		.on( "click", this.prev ); // add event listener
+		.on( "click", self.prev ); // add event listener
 
 		// extend style nav right
 		$.fn.extend( cssNavRightLeft, {
@@ -157,25 +161,27 @@
 		} );
 
 		// create nav right
-		var navRight = $( "<div id='nav-right-slide-" + this.countId + "' data-id-slide='" + this.countId + "'/>" )
+		var navRight = $( "<div id='nav-right-slide-" + self.countId + "' data-id-slide='" + self.countId + "'/>" )
 		.css( cssNavRightLeft ) // add style
-		.on( "click", this.next ); // add event listener
+		.on( "click", self.next ); // add event listener
 		
 		// add nav right and left
-		this.elementTarget.append( navRight );
-		this.elementTarget.append( navLeft );
+		self.elementTarget.append( navRight );
+		self.elementTarget.append( navLeft );
 
 	}
 
 	Slide.prototype.addImages = function() {
 
+		var self = this;
+
 		// get images
-		var images = this.getImages();
+		var images = self.getImages();
 
 		// set style ul#content-images
 		var cssContentImages = {
 			"height" : "100%",
-			"width" : this.widthTarget * this.lenImages,
+			"width" : self.widthTarget * self.lenImages,
 			"left" : "0",
 			"top" : "0",
 			"margin" : "0",
@@ -184,18 +190,18 @@
 		};
 
 		// create ul#content-images
-		var contentImages = $( "<ul id='content-images-" + this.countId + "'/>" )
+		var contentImages = $( "<ul id='content-images-" + self.countId + "'/>" )
 		.css( cssContentImages ); // add style
 
 		// set style li.images-slide
 		var cssImagesSlide = {
-			"width" : this.widthTarget,
+			"width" : self.widthTarget,
 			"height" : "100%",
 			"float" : "left"
 		};
 
 		// create li.images-slide
-		for( var i = 0, len = this.lenImages; i < len; i++ ) {
+		for( var i = 0, len = self.lenImages; i < len; i++ ) {
 
 			var li = $( "<li class='images-slide'/>" )
 			.css( cssImagesSlide ); // add style
@@ -206,17 +212,17 @@
 
 		}
 
-		this.clearImages(); // clear images
+		self.clearImages(); // clear images
 
 		// wrap ul#content-images
 		var content = $( "<div/>" ).css( {
 			"overflow" : "hidden",
-			"width" : this.widthTarget,
+			"width" : self.widthTarget,
 			"height" : "100%"
 		} ).append( contentImages );
 
 		// add ul#content-images
-		this.elementTarget.append( content );
+		self.elementTarget.append( content );
 
 
 	}
