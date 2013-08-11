@@ -355,21 +355,5 @@
 		}
 
 	} );
-	
-	// call
-	$( "#content-slide-2" ).slide( {
-		"effect" : "easeInQuad",
-		"nav-selector" : {
-			"width" : "15px",
-			"height" : "15px",
-			"float" : "left",
-			"margin-left" : "3px",
-			"border" : "1px solid #ccc",
-			"border-radius" : "50%",
-			"cursor" : "pointer"
-		},
-		"class-nav-selector-selected" : "nav-selector-selected"
-	} );
-	$( "#content-slide-1" ).slide();
 
 } )( jQuery );
