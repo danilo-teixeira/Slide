@@ -1,0 +1,22 @@
+{
+	"name": "slide",
+	"version": "0.1.5",
+	"description": "An simple slide of my personal library.",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/danilo-teixeira/Slide.git"
+	},
+	"author": {
+		"name": "Danilo Teixeira",
+		"email": "daniloteixeira-santos@hotmail.com"
+	},
+	"license": {
+		"type": "MIT",
+		"url": "http://opensource.org/licenses/MIT"
+	},
+	"devDependencies": {
+		"grunt": "~0.4.1",
+		"grunt-contrib-uglify": "~0.2.2",
+		"grunt-contrib-concat": "~0.3.0"
+	}
+}
