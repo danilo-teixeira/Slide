@@ -51,7 +51,7 @@
 		self.lenImages = self.getImages().length;
 
 		self.timeAnimate = self.options[ "time-animate" ] || 1000;
-		self.effect = self.options[ "effect" ] || "easeInBack";
+		self.effect = self.options.effect || "easeInBack";
 		self.classSelectorNav = "seletor-nav";
 
 		self.elementTarget.css( "position", "relative" );
@@ -59,13 +59,13 @@
 		self.addImages();
 		self.addNav();
 
-	}
+	};
 
 	Slide.prototype.clearImages = function() {
 
 		this.elementTarget.html( "" );
 
-	}
+	};
 
 	Slide.prototype.getImages = function() {
 
@@ -73,7 +73,7 @@
 
 		return images;
 
-	}
+	};
 
 	Slide.prototype.addNav = function() {
 
@@ -88,7 +88,7 @@
 			"margin" : "0",
 			"padding" : "0",
 			"list-style" : "none"
-		}
+		};
 
 		// create ul
 		var navSlide = $( "<ul id='nav-slide-" + self.countId + "'/>" )
@@ -147,7 +147,7 @@
 			"top" : "50%",
 			"margin-top" : "-50px",
 			"border" : "1px solid #ccc"
-		}
+		};
 
 		// create nav left
 		var navLeft = $( "<div id='nav-left-slide-" + self.countId + "' data-id-slide='" + self.countId + "'/>" )
@@ -169,7 +169,7 @@
 		self.elementTarget.append( navRight );
 		self.elementTarget.append( navLeft );
 
-	}
+	};
 
 	Slide.prototype.addImages = function() {
 
@@ -225,7 +225,7 @@
 		self.elementTarget.append( content );
 
 
-	}
+	};
 
 	/*
 	 * @param {Number} idSlide
@@ -238,7 +238,7 @@
 		$( "." + self.classSelectorNav ).removeClass( classSelected ); // remove class selected
 		$( "." + self.classSelectorNav ).eq( self.indice ).addClass( classSelected ); // add class selected
 
-	}
+	};
 
 	/*
 	 * @param {Object} e
@@ -267,7 +267,7 @@
 
 		self.move();
 
-	}
+	};
 
 	/*
 	 * @param {Object} e
@@ -278,7 +278,7 @@
 		var idSlide = element.data( "id-slide" ); // get id the target element
 		var self = slides[ idSlide ]; // get target instance
 
-		if( self.indice == 0 ) {
+		if( self.indice === 0 ) {
 
 			return false;
 
@@ -290,7 +290,7 @@
 
 		self.move();
 
-	}
+	};
 
 	/*
 	 * @param {Object} e
@@ -313,7 +313,7 @@
 
 		self.move();
 
-	}
+	};
 
 	Slide.prototype.move = function() {
 
@@ -323,7 +323,7 @@
 
 		} );
 
-	}
+	};
 
 	/*
 	 * @param {Object} elementTarget
@@ -337,14 +337,14 @@
 			"margin-left" : marginLeft
 		}, elementTarget.timeAnimate, elementTarget.effect );
 
-	}
+	};
 
 	// to plugin $.slide
 	$.fn.extend( {
 
-		"slide" : function( options ) {
+		slide : function( object ) {
 			
-			var options = options || {};
+			var options = object || {};
 
 			$.each( this, function() {
 
