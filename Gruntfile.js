@@ -22,7 +22,7 @@ module.exports = function(grunt) {
 					' */\n'
 			},
 			dist: {
-				src: [ 'src/<%= pkg.name %>.js', 'src/lib/jquery.easing.min.js' ],
+				src: [ 'src/<%= pkg.name %>.js' ],
 				dest: 'src/<%= pkg.name %>.jquery.js'
 			},
 		},
