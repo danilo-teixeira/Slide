@@ -13,13 +13,13 @@ module.exports = function(grunt) {
 		}
 	},
 	concat: {
-			options: {
-				stripBanners: true,
-				banner: '/**\n'+
-					' * <%= pkg.name %>, v<%= pkg.version %> - (<%= grunt.template.today("yyyy-mm-dd") %>) \n'+ 
-					' * license: <%= pkg.license.type %> - see <%= pkg.license.url %> \n'+ 
-					' * author: <%= pkg.author.name %> \n'+
-					' */\n'
+		options: {
+			stripBanners: true,
+			banner: '/**\n'+
+				' * <%= pkg.name %>, v<%= pkg.version %> - (<%= grunt.template.today("yyyy-mm-dd") %>) \n'+ 
+				' * license: <%= pkg.license.type %> - see <%= pkg.license.url %> \n'+ 
+				' * author: <%= pkg.author.name %> \n'+
+				' */\n'
 			},
 			dist: {
 				src: [ 'src/<%= pkg.name %>.js', 'src/lib/jquery.easing.min.js' ],

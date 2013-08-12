@@ -39,7 +39,7 @@ Slide is a simple slide of my personal library.
 ```
 by Danilo Teixeira
 
-## Licensa
+## License
 
 MIT License
 
